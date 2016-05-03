@@ -1,0 +1,74 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <title>MyEtherPasswordGuesser</title>
+  <link rel="stylesheet" href="https://www.myetherwallet.com/css/etherwallet-master.min.css">
+  <script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.0.0-beta1/jquery.min.js"></script>
+  <script type="text/javascript" src="https://www.myetherwallet.com/js/etherwallet-static.min.js"></script>
+  <script type="text/javascript" src="https://www.myetherwallet.com/js/etherwallet-master.js"></script>
+</head>
+
+<body>
+GETH JSON Wallet String:<br>
+<textarea id="jsontext" style="width:90%" rows=5>
+{"address":"7d7312f656529ae0aa8222bc38a6dcede8cXXXXX","Crypto":{"cipher":"aes-128-ctr","ciphertext":"6b09cdc19eb19035905904bbbXXXXXXXXXXX933671230015bbc349868c4","cipherparams":{"iv":"efc40aa19XXXXXXXXXXb847184c3c1b"},"kdf":"scrypt","kdfparams":{"dklen":32,"n":262144,"p":1,"r":8,"salt":"f15b7fc5880d23b76ebcXXXXXXXXXXX80a8dde8450a45327d79"},"mac":"2aad1e9a65336017dd66912aXXXXXXXXXXXXX2ab2070c"},"id":"b1bb3e1b-2a3d-XXXX-8570-4c5XXXXXXX1","version":3}
+</textarea><br><br>
+
+Password Set 1 (separated by commas):<br>
+<textarea id="passwordset1" style="width:90%">
+geth, mist, password
+</textarea><br><br>
+
+Password Set 2 (separated by commas):<br>
+<textarea id="passwordset2" style="width:90%">
+123, 12345, , 00000
+</textarea><br><br>
+
+
+<script>
+var thejson=$('#jsontext').val();
+
+function tryPassword(thisjson, thepassword){
+thepassword=thepassword.trim();
+
+			try {
+				decryptGethKeyV3(thisjson,thepassword);
+				console.log("correct password: "+thepassword);
+				alert("SUCCESS! The correct password is: "+thepassword);
+			} catch (err) {
+				console.log("password incorrect:"+thepassword);
+			}
+			
+}
+
+function tryPasswords(){
+
+passwords1=$('#passwordset1').val().split(",");
+passwords2=$('#passwordset2').val().split(",");
+
+for (var i = 0; i < passwords1.length; i++) {
+	for (var j = 0; j < passwords2.length; j++) {
+	
+		console.log("trying password: "+passwords1[i]+passwords2[j]+"<br>");
+		tryPassword(thejson,passwords1[i]+passwords2[j]);
+	}
+}
+
+
+
+
+}
+
+</script>
+
+<br><Br> 
+<a class="btn btn-primary btnAction" onclick="tryPasswords();">Guess Password</a>
+
+<br><Br> 
+       
+<div id="log">Enter settings and press the button. To watch progress, load the console before starting the process.</div>
+       
+</body>
+</html>
+
